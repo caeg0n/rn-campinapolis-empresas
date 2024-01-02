@@ -1,0 +1,68 @@
+{
+  "expo": {
+    "name": "Campinapolis Empresas",
+    "slug": "campinapolis-empresas",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "privacy": "public",
+    "sdkVersion": "48.0.0",
+    "platforms": ["android"],
+    "description": "empresas, gerenciamento, campinápolis",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#000"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "config": {
+        "googleMapsApiKey": "AIzaSyD7_x-IaDtLZle9C37GEnizuCkEOSnkkBg"
+      },
+      "infoPlist": {
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Este aplicativo usa o serviço de localizaçãon para localizar o endereço do usuário."
+      },
+      "supportsTablet": true,
+      "buildNumber": "3",
+      "bundleIdentifier": "com.caeg0n.campinapolisempresas"
+    },
+    "android": {
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD7_x-IaDtLZle9C37GEnizuCkEOSnkkBg"
+        }
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.caeg0n.campinapolisempresas"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permitir Campinapolis Compras usar sua localização."
+        }
+      ]
+    ],
+    "extra": {
+    }
+  }
+}
