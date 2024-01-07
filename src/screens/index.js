@@ -1,5 +1,6 @@
-export * from './Authentication';
 export * from './ProductRegister';
+export * from './EditProfile';
+export * from './Authentication';
 //export * from './Explore';
 //export * from './PlaceList';
 //export * from './PlaceDetails';

@@ -43,6 +43,7 @@ export const theme = createTheme({
     transparent: 'transparent',
     facebook: palette.facebook,
     google: palette.google,
+    lightGrey: '#D3D3D3',
   },
   breakpoints: {
     phone: 0,

@@ -1,23 +1,25 @@
 import React from 'react';
-import { AuthContext } from '@src/auth';
-import { Box, Button, Image, Text } from '@src/components';
+import { Box, Button, Image } from '@src/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'react-native';
+//import { AuthContext } from '@src/auth';
 //import { StyleSheet } from 'react-native';
 //import { useDispatch } from 'react-redux';
 //import { useEffect } from 'react';
 
 export const Authentication = ({ navigation }) => {
-  const { signIn } = React.useContext(AuthContext);
   const { bottom } = useSafeAreaInsets();
 
   const onConnectWithPhoneNumberButtonPress = () => {
     navigation.navigate('AuthenticationWithPhone');
   };
+
   const onSocialNetworkConnectButtonPress = () => {
-    signIn();
   };
 
   return (
+    <>
+    <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
     <Box
       flex={1}
       flexDirection="column"
@@ -28,6 +30,7 @@ export const Authentication = ({ navigation }) => {
           source={require('@src/assets/app/app_icon.png')}
           width="55%"
           height="95%"
+          style={{marginTop:50}}
         />
       </Box>
       <Box
@@ -68,14 +71,14 @@ export const Authentication = ({ navigation }) => {
             backgroundColor="facebook"
             onPress={()=>navigation.navigate("ProductRegister")}
           />
-          <Button
+          {/* <Button
             label="FRETE"
             isFullWidth
             //variant="facebook"
             marginTop="s"
             backgroundColor="facebook"
             onPress={onSocialNetworkConnectButtonPress}
-          />
+          /> */}
           <Button
             label="ENTREGADOR"
             //variant="google"
@@ -88,10 +91,11 @@ export const Authentication = ({ navigation }) => {
             //variant="google"
             marginTop="s"
             isFullWidth
-            onPress={onSocialNetworkConnectButtonPress}
+            onPress={()=>navigation.navigate("EditProfile")}
           />
         </Box>
       </Box>
     </Box>
+    </>
   );
 };

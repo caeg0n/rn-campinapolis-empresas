@@ -9,17 +9,20 @@ import {
   getNavigationTheme,
 } from '@src/theme';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import TabNavigation from './TabNavigation';
-import { AuthContext } from '@src/auth';
-import { AuthenticationStack } from './Stacks';
+//import TabNavigation from './TabNavigation';
+// import { AuthContext } from '@src/auth';
+//import { AuthenticationStack } from './Stacks';
 import { PortalHost } from '@gorhom/portal';
-import { DishDetails, SearchDishes, ActivityHistory, ProductRegister } from '@src/screens';
+import { ProductRegister } from '@src/screens';
+import { EditProfile } from '@src/screens';
+import { Authentication } from '@src/screens';
+
 
 const RootStack = createNativeStackNavigator();
 
 export const RootNavigation = () => {
   const { theme } = useContext(ThemeContext);
-  const { userToken } = useContext(AuthContext);
+  // const { userToken } = useContext(AuthContext);
 
   const navigationTheme = React.useMemo(() => {
     return getNavigationTheme(theme);
@@ -40,7 +43,7 @@ export const RootNavigation = () => {
           screenOptions={{
             presentation: 'modal',
           }}>
-          {userToken ? (
+          {/* {userToken ? (
             <RootStack.Screen
               name="MainStacks"
               options={{ headerShown: false }}
@@ -54,7 +57,7 @@ export const RootNavigation = () => {
               name="AuthenticationStacks"
               component={AuthenticationStack}
             />
-          )}
+          )} */}
           {/* <RootStack.Screen
             options={{
               headerTransparent: true,
@@ -81,11 +84,26 @@ export const RootNavigation = () => {
           /> */}
           <RootStack.Screen
             options={{
+              headerShown: false,
+            }}
+            name="Authentication"
+            component={Authentication}
+          />
+          <RootStack.Screen
+            options={{
               headerShown: true,
               title: 'Pedidos'
             }}
             name="ProductRegister"
             component={ProductRegister}
+          />
+          <RootStack.Screen
+            options={{
+              headerShown: true,
+              title: 'Configurações'
+            }}
+            name="EditProfile"
+            component={EditProfile}
           />
         </RootStack.Navigator>
       </NavigationContainer>

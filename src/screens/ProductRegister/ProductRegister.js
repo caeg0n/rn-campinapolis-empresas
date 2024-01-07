@@ -10,9 +10,36 @@ import { ScrollView } from 'react-native';
 
 var CREATE_PRODUCT_URL = (__DEV__ ? DEV_API_BASE : PROD_API_BASE) + '/products';
 
-function fetchData = async () => {
-    
-};
+async function createProduct(product) {
+  try {
+    let response = await fetch(CREATE_PRODUCT_URL, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        address: {
+          device_id: id,
+          title: address_data.title,
+          name: address_data.name,
+          cel: address_data.phone,
+          address_detail: address_data.address,
+        },
+      }),
+    });
+    if (response.status !== 201) {
+      console.log('erro');
+    }
+    response = await response.json();
+    if (response.id > 0) {
+        //nav.navigate('SavedAddresses');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 export const ProductRegister = ({ navigation }) => {
     const [image, setImage] = useState(null);
@@ -66,7 +93,8 @@ export const ProductRegister = ({ navigation }) => {
         if (image) {
             const data = await cloudinaryUpload(image);
             const url = data.url;
-
+            
+            
         }
     };
 

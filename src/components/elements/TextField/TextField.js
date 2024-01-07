@@ -33,6 +33,7 @@ export const TextField = ({
   leftIcon,
   leftIconSize = fontSize.l,
   hasMargin,
+  disabled = false,
   inputProps: { onFocus, onBlur, ...restInputProps },
   ...rest
 }) => {
@@ -44,8 +45,10 @@ export const TextField = ({
   };
 
   const handleOnBlur = (e) => {
-    setBorderWidth(1);
-    onBlur?.(e);
+    if (!disabled){
+      setBorderWidth(1);
+      onBlur?.(e);
+    }
   };
 
   return (
@@ -55,10 +58,11 @@ export const TextField = ({
         justifyContent="center"
         alignItems="center"
         borderRadius="l"
-        backgroundColor="card"
+        backgroundColor={disabled ? 'lightGrey' : 'card'}
         borderWidth={borderWidth}
         borderColor="white"
-        //height={55}
+        height={55}
+        opacity={disabled ? 0.5 : 1}
         {...rest}
         margin={hasMargin ? 's' : undefined}>
         {leftIcon ? (
@@ -78,6 +82,8 @@ export const TextField = ({
           borderRadius="l"
           backgroundColor="transparent"
           height="100%"
+          editable={!disabled}
+          selectTextOnFocus={!disabled}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
           {...restInputProps}
