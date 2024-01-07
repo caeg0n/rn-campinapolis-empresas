@@ -10,9 +10,17 @@ import Constants from 'expo-constants';
 import { setExpoToken } from '@src/redux/actions/session';
 import fetchWithTimeout from '@gluons/react-native-fetch-with-timeout';
 import { useDispatch, useSelector } from 'react-redux';
+import { updateDoc } from 'firebase/firestore';
 
 const API_BASE_URL = __DEV__ ? DEV_API_BASE : PROD_API_BASE;
 const SET_EXPO_TOKEN_URL = __DEV__ ? DEV_API_BASE + '/notification/register' : PROD_API_BASE + '/notification/register';
+
+function updateMinimalOrderValue(value){
+  
+}
+
+function updateDeliveryPrice(value){
+}
 
 export const EditProfile = () => {
   const dispatch = useDispatch();
@@ -22,6 +30,10 @@ export const EditProfile = () => {
   const [cover, setCover] = useState('https://png.pngtree.com/template/20190323/ourmid/pngtree-vintage-retro-blank-labels-logo-image_83079.jpg');
   const [logo, setLogo] = useState(cover);
   const [title, setTitle] = useState('- '.repeat(10));
+  const [minimalOrderValue, setMinimalOrderValue] = React.useState("000");
+  const [deliveryPrice, setDeliveryPrice] = React.useState("000");
+  const [editableMinimalOrderValue, setEditableMinimalOrderValue] = React.useState(false);
+  const [editableDeliveryPrice, setEditableDeliveryPrice] = React.useState(false);
   const [info, setInfo] = useState('');
   const { uuid } = useSelector((state) => state.sessionReducer);
 
@@ -39,11 +51,15 @@ export const EditProfile = () => {
         setCover(response.data.organization.cover);
         setTitle(response.data.organization.name);
         setLogo(response.data.organization.logo);
+        setEditableMinimalOrderValue(true);
+        setEditableDeliveryPrice(true);
+        updateMinimalOrderValue(minimalOrderValue);
+        updateDeliveryPrice(deliveryPrice);
       } else {
-        //console.error('Error:', response.status);
+        console.log('Error:', response.status);
       }
     } catch (error) {
-      //console.error('Error:', error.response ? error.response.status : error.message);
+      console.log('Error:', error.response ? error.response.status : error.message);
     }
   };
 
@@ -127,11 +143,18 @@ export const EditProfile = () => {
                           title={title} 
                           logo={logo}
                           organizationId={organizationId}
-                          organizationName={organizationName} 
+                          organizationName={organizationName}
+
       />
       <ContactInformationForm organizationId={organizationId} 
                               token={token} 
-                              checkIfDeviceIsRegistered={checkIfDeviceIsRegistered} 
+                              minimalOrderValue={minimalOrderValue}
+                              deliveryPrice={deliveryPrice}
+                              editableMinimalOrderValue={editableMinimalOrderValue}
+                              editableDeliveryPrice={editableDeliveryPrice}
+                              checkIfDeviceIsRegistered={checkIfDeviceIsRegistered}
+                              setMinimalOrderValue={setMinimalOrderValue}
+                              setDeliveryPrice={setDeliveryPrice}
       />
     </ScrollView>
   );

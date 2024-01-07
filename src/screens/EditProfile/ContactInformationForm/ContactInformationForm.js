@@ -4,20 +4,24 @@ import { fontSize } from '@src/theme';
 import { useSelector } from 'react-redux';
 import CurrencyInput, { FakeCurrencyInput } from "react-native-currency-input";
 import {
-  KeyboardAvoidingView,
-  ScrollView,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  //KeyboardAvoidingView,
+  //ScrollView,
+  //TouchableOpacity
 } from "react-native";
 
-export const ContactInformationForm = ({ organizationId, token, checkIfDeviceIsRegistered }) => {
+export const ContactInformationForm = ({ minimalOrderValue,
+  deliveryPrice,
+  editableMinimalOrderValue,
+  editableDeliveryPrice,
+  organizationId,
+  token,
+  checkIfDeviceIsRegistered,
+  setMinimalOrderValue,
+  setDeliveryPrice }) => {
   const { uuid } = useSelector((state) => state.sessionReducer);
-  const [valor, setValor] = React.useState("1234");
-
-  const [minimalOrder, setMinimalOrder] = React.useState(0);
-  const [deliveryPrice, setDeliveryPrice] = React.useState(0);
 
   return (
     <Box backgroundColor="lightGrey" padding="m">
@@ -33,7 +37,6 @@ export const ContactInformationForm = ({ organizationId, token, checkIfDeviceIsR
         inputProps={{
           defaultValue: organizationId.toString(),
           fontSize: fontSize.xx
-          //textContentType: 'telephoneNumber',
         }}
         style={{ backgroundColor: 'white', borderRadius: 5 }}
       />
@@ -42,24 +45,24 @@ export const ContactInformationForm = ({ organizationId, token, checkIfDeviceIsR
         inputProps={{
           defaultValue: token.toString(),
           fontSize: 12
-          //textContentType: 'name',
         }}
         style={{ backgroundColor: 'white', borderRadius: 5 }}
       />
-      <Divider style={{paddingBottom:20}} />
-      
+      <Divider style={{ paddingBottom: 20 }} />
+
       <View style={styles.container}>
         <Text style={styles.label}>Valor Mínimo do Pedido</Text>
         <CurrencyInput
-          value={valor}
+          value={minimalOrderValue}
           style={styles.inputBasic}
-          onChangeValue={setValor}
+          onChangeValue={setMinimalOrderValue}
           minValue={0}
           prefix="R$ "
           width={'50%'}
           precision={2}
           backgroundColor="white"
           placeholder="VALOR MINIMO DO PEDIDO"
+          editable={editableMinimalOrderValue}
         />
       </View>
 
@@ -68,19 +71,20 @@ export const ContactInformationForm = ({ organizationId, token, checkIfDeviceIsR
       <View style={styles.container}>
         <Text style={styles.label}>Valor do Frete</Text>
         <CurrencyInput
-          value={valor}
+          value={deliveryPrice}
           style={styles.inputBasic}
-          onChangeValue={setValor}
+          onChangeValue={setDeliveryPrice}
           minValue={0}
           width={'50%'}
           prefix="R$ "
           precision={2}
           backgroundColor="white"
           placeholder="VALOR DO FRETE"
+          editable={editableDeliveryPrice}
         />
       </View>
 
-      <Divider/>
+      <Divider />
 
       <Button onPress={() => checkIfDeviceIsRegistered(uuid)} label="Atualizar" isFullWidth />
     </Box>
@@ -89,15 +93,15 @@ export const ContactInformationForm = ({ organizationId, token, checkIfDeviceIsR
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative', // Allows absolute positioning inside
+    position: 'relative',
     padding: 10,
-    paddingBottom:10,
+    paddingBottom: 10,
   },
   label: {
     marginLeft: -10,
-    position: 'absolute', 
+    position: 'absolute',
     top: -10,
-    left: 10, 
+    left: 10,
     backgroundColor: 'transparent',
     fontWeight: 'bold',
     fontSize: 14,
