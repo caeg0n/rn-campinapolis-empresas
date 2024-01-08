@@ -10,16 +10,22 @@ import Constants from 'expo-constants';
 import { setExpoToken } from '@src/redux/actions/session';
 import fetchWithTimeout from '@gluons/react-native-fetch-with-timeout';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateDoc } from 'firebase/firestore';
+import { myConnPut } from '@src/utils';
 
 const API_BASE_URL = __DEV__ ? DEV_API_BASE : PROD_API_BASE;
 const SET_EXPO_TOKEN_URL = __DEV__ ? DEV_API_BASE + '/notification/register' : PROD_API_BASE + '/notification/register';
+const UPDATE_ORGANIZATION_STATE_URL = __DEV__ ? DEV_API_BASE + '/organization_state' : PROD_API_BASE + '/organizations_state';
+const UPDATE_ORGANIZATION_DELIVERY_TYPE_URL = __DEV__ ? DEV_API_BASE + '/organization_delivery_type' : PROD_API_BASE + '/organizations_delivery_type';
 
-function updateMinimalOrderValue(value){
-  
-}
-
-function updateDeliveryPrice(value){
+async function updateDeliveryType(uuid, delivery_type, state) {
+  const body = {
+    organization: {
+      uuid: uuid,
+      delivery_type: delivery_type,
+      state: state
+    }
+  }
+  const transaction = await myConnPut(UPDATE_ORGANIZATION_DELIVERY_TYPE_URL, body);
 }
 
 export const EditProfile = () => {
@@ -34,6 +40,8 @@ export const EditProfile = () => {
   const [deliveryPrice, setDeliveryPrice] = React.useState("000");
   const [editableMinimalOrderValue, setEditableMinimalOrderValue] = React.useState(false);
   const [editableDeliveryPrice, setEditableDeliveryPrice] = React.useState(false);
+  const [deliveryForCamp, setDeliveryForCamp] = useState(false);
+  const [deliveryForOrg, setDeliveryForOrg] = useState(false);
   const [info, setInfo] = useState('');
   const { uuid } = useSelector((state) => state.sessionReducer);
 
@@ -51,10 +59,10 @@ export const EditProfile = () => {
         setCover(response.data.organization.cover);
         setTitle(response.data.organization.name);
         setLogo(response.data.organization.logo);
-        setEditableMinimalOrderValue(true);
-        setEditableDeliveryPrice(true);
-        updateMinimalOrderValue(minimalOrderValue);
-        updateDeliveryPrice(deliveryPrice);
+        setDeliveryForOrg(response.data.organization.delivery_type === "my_org" ? true : false);
+        setDeliveryForCamp(response.data.organization.delivery_type === "camp_entregas" ? true : false);
+        // setEditableMinimalOrderValue(true);
+        // setEditableDeliveryPrice(true);
       } else {
         console.log('Error:', response.status);
       }
@@ -99,62 +107,61 @@ export const EditProfile = () => {
   }
 
   async function registerExpoToken(token, uuid) {
-    let transaction = {};
+    let transaction = { state: false };
     try {
       const response = await fetchWithTimeout(
         SET_EXPO_TOKEN_URL,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ notification: { token: token, device: uuid, device_class: 0 } }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ notification: { token, device: uuid, device_class: 0 } }),
         },
-        {
-          timeout: 6000,
-        },
+        { timeout: 6000 }
       );
-      if (!response.ok) {
-        transaction.state = false;
-        return transaction;
-      } else {
-        if (response.status >= 200 && response.status <= 299) {
-          const json = await response.json();
-          transaction.state = true;
-          transaction.json = json;
-          return transaction;
-        } else {
-          transaction.state = false;
-          transaction.json = json;
-          return transaction;
-        }
+      const json = await response.json();
+      transaction.json = json;
+      if (response.ok && response.status >= 200 && response.status <= 299) {
+        transaction.state = true;
       }
     } catch (err) {
-      transaction.state = false;
       transaction.err = err;
-      return transaction;
     }
+    return transaction;
   }
 
+  async function updateDeliveryMethod(deliveryType, state) {
+    if (deliveryType === "my_org" ) {
+      setDeliveryForOrg(state);
+      setDeliveryForCamp(!state);
+    }
+    if (deliveryType === "camp_entregas") {
+      setDeliveryForCamp(state);
+      setDeliveryForOrg(!state);
+    }
+    if (organizationId > 0 && uuid)
+      await updateDeliveryType(uuid, deliveryType, state);
+  }
 
   return (
     <ScrollView>
-      <HeadingInformation cover={cover} 
-                          title={title} 
-                          logo={logo}
-                          organizationId={organizationId}
-                          organizationName={organizationName}
-
+      <HeadingInformation cover={cover}
+        title={title}
+        logo={logo}
+        organizationId={organizationId}
+        organizationName={organizationName}
       />
-      <ContactInformationForm organizationId={organizationId} 
-                              token={token} 
-                              minimalOrderValue={minimalOrderValue}
-                              deliveryPrice={deliveryPrice}
-                              editableMinimalOrderValue={editableMinimalOrderValue}
-                              editableDeliveryPrice={editableDeliveryPrice}
-                              checkIfDeviceIsRegistered={checkIfDeviceIsRegistered}
-                              setMinimalOrderValue={setMinimalOrderValue}
-                              setDeliveryPrice={setDeliveryPrice}
+      <ContactInformationForm organizationId={organizationId}
+        token={token}
+        minimalOrderValue={minimalOrderValue}
+        deliveryPrice={deliveryPrice}
+        editableMinimalOrderValue={editableMinimalOrderValue}
+        editableDeliveryPrice={editableDeliveryPrice}
+        deliveryForCamp={deliveryForCamp}
+        deliveryForOrg={deliveryForOrg}
+        checkIfDeviceIsRegistered={checkIfDeviceIsRegistered}
+        setMinimalOrderValue={setMinimalOrderValue}
+        setDeliveryPrice={setDeliveryPrice}
+        updateDeliveryMethod={updateDeliveryMethod}
       />
     </ScrollView>
   );

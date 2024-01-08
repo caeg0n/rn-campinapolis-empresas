@@ -3,6 +3,8 @@ import { Box, TextField, Button, Divider } from '@src/components';
 import { fontSize } from '@src/theme';
 import { useSelector } from 'react-redux';
 import CurrencyInput, { FakeCurrencyInput } from "react-native-currency-input";
+import { Switch } from 'react-native';
+import { Section, Icon, ListRowItem } from '@src/components';
 import {
   StyleSheet,
   Text,
@@ -20,8 +22,12 @@ export const ContactInformationForm = ({ minimalOrderValue,
   token,
   checkIfDeviceIsRegistered,
   setMinimalOrderValue,
+  deliveryForCamp,
+  deliveryForOrg,
+  updateDeliveryMethod,
   setDeliveryPrice }) => {
   const { uuid } = useSelector((state) => state.sessionReducer);
+
 
   return (
     <Box backgroundColor="lightGrey" padding="m">
@@ -48,8 +54,35 @@ export const ContactInformationForm = ({ minimalOrderValue,
         }}
         style={{ backgroundColor: 'white', borderRadius: 5 }}
       />
-      <Divider style={{ paddingBottom: 20 }} />
+      
+      <Divider/>
 
+      <Section style={{marginTop:-20}} title="Entregas">
+        <ListRowItem
+          title="PLATAFORMA CAMPINAPOLIS ENTREGAS"
+          leftElement={<Icon name="logo-google" size={fontSize.l} />}
+          rightElement={
+            <Switch
+              value={deliveryForCamp}
+              onValueChange={(value) => updateDeliveryMethod("camp_entregas",value)}
+            />
+          }
+        />
+        <ListRowItem 
+          style={{paddingTop:-10}}
+          title="USAR MEUS ENTREGADORES"
+          leftElement={<Icon name="logo-google" size={fontSize.l} />}
+          rightElement={
+            <Switch
+              value={deliveryForOrg}
+              onValueChange={(value) => updateDeliveryMethod("my_org",value)}
+            />
+          }
+        />
+      </Section>
+
+      <Divider style={{ paddingBottom: 20 }}  />
+      
       <View style={styles.container}>
         <Text style={styles.label}>Valor Mínimo do Pedido</Text>
         <CurrencyInput

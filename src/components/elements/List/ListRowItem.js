@@ -5,7 +5,7 @@ import { Text } from '../Text';
 import { Icon } from '../Icon';
 import { I18nManager } from 'react-native';
 import { Rating } from 'react-native-ratings';
-import { useAppTheme } from '@src/theme';
+import { fontSize, useAppTheme } from '@src/theme';
 
 export const ListRowItem = ({
   id,
@@ -67,7 +67,7 @@ export const ListRowItem = ({
             </Box>
           )}
           <Box flex={11}>
-            <Text fontWeight="bold" marginVertical="xs" textAlign="left">
+            <Text fontSize={fontSize.xs} fontWeight="bold" marginVertical="xs" textAlign="left">
               {title}
             </Text>
             {note && (
