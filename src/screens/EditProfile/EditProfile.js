@@ -30,20 +30,25 @@ async function updateDeliveryType(uuid, delivery_type, state) {
 
 export const EditProfile = () => {
   const dispatch = useDispatch();
+  const editableMinimalOrderValue = React.useRef(false);
+  const editableDeliveryPrice = React.useRef(false);
+  const minimalOrderValue = React.useRef("000");
+  const deliveryPrice = React.useRef("000");
+
   const [organizationId, setOrganizationId] = useState('- '.repeat(50));
   const [organizationName, setOrganizationName] = useState('- '.repeat(10));
   const [token, setToken] = useState('- '.repeat(50));
   const [cover, setCover] = useState('https://png.pngtree.com/template/20190323/ourmid/pngtree-vintage-retro-blank-labels-logo-image_83079.jpg');
   const [logo, setLogo] = useState(cover);
   const [title, setTitle] = useState('- '.repeat(10));
-  const [minimalOrderValue, setMinimalOrderValue] = React.useState("000");
-  const [deliveryPrice, setDeliveryPrice] = React.useState("000");
-  const [editableMinimalOrderValue, setEditableMinimalOrderValue] = React.useState(false);
-  const [editableDeliveryPrice, setEditableDeliveryPrice] = React.useState(false);
   const [deliveryForCamp, setDeliveryForCamp] = useState(false);
   const [deliveryForOrg, setDeliveryForOrg] = useState(false);
-  const [info, setInfo] = useState('');
   const { uuid } = useSelector((state) => state.sessionReducer);
+
+  if (title != ('- '.repeat(10))) {
+    editableMinimalOrderValue.current = true;
+    editableDeliveryPrice.current = true;
+  }
 
   useEffect(() => {
     checkIfDeviceIsRegistered(uuid);
@@ -55,19 +60,18 @@ export const EditProfile = () => {
       const url = `${API_BASE_URL}/organization_devices?organization_device[device_id]=` + uuid;
       const response = await axios.get(url);
       if (response.status === 200 && response.data) {
+        console.log(response.data);
         setOrganizationId(response.data.device);
         setCover(response.data.organization.cover);
         setTitle(response.data.organization.name);
         setLogo(response.data.organization.logo);
         setDeliveryForOrg(response.data.organization.delivery_type === "my_org" ? true : false);
         setDeliveryForCamp(response.data.organization.delivery_type === "camp_entregas" ? true : false);
-        // setEditableMinimalOrderValue(true);
-        // setEditableDeliveryPrice(true);
       } else {
-        console.log('Error:', response.status);
+        //console.log('Error:', response.status);
       }
     } catch (error) {
-      console.log('Error:', error.response ? error.response.status : error.message);
+      //console.log('Error:', error.response ? error.response.status : error.message);
     }
   };
 
@@ -95,15 +99,16 @@ export const EditProfile = () => {
       token = await Notifications.getExpoPushTokenAsync({
         projectId: Constants.expoConfig.extra.eas.projectId,
       });
-    } else {
-      alert('Must use physical device for Push Notifications');
-    }
-    setToken(token.data);
-    const transaction = await registerExpoToken(token.data, uuid);
-    if (transaction.state === true) {
+      setToken(token.data);
+      const transaction = await registerExpoToken(token.data, uuid);
+      if (transaction.state !== true) {
+        alert('Error registering for push notifications');
+      }
       dispatch(setExpoToken(token));
+    } else {
+      //console.log('Push notifications are only available on physical devices.');
     }
-    return token.data;
+    return token ? token.data : null;
   }
 
   async function registerExpoToken(token, uuid) {
@@ -130,7 +135,7 @@ export const EditProfile = () => {
   }
 
   async function updateDeliveryMethod(deliveryType, state) {
-    if (deliveryType === "my_org" ) {
+    if (deliveryType === "my_org") {
       setDeliveryForOrg(state);
       setDeliveryForCamp(!state);
     }
@@ -154,13 +159,11 @@ export const EditProfile = () => {
         token={token}
         minimalOrderValue={minimalOrderValue}
         deliveryPrice={deliveryPrice}
-        editableMinimalOrderValue={editableMinimalOrderValue}
-        editableDeliveryPrice={editableDeliveryPrice}
+        editableMinimalOrderValue={editableMinimalOrderValue.current}
+        editableDeliveryPrice={editableDeliveryPrice.current}
         deliveryForCamp={deliveryForCamp}
         deliveryForOrg={deliveryForOrg}
         checkIfDeviceIsRegistered={checkIfDeviceIsRegistered}
-        setMinimalOrderValue={setMinimalOrderValue}
-        setDeliveryPrice={setDeliveryPrice}
         updateDeliveryMethod={updateDeliveryMethod}
       />
     </ScrollView>

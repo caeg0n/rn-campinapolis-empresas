@@ -14,18 +14,18 @@ import {
   //TouchableOpacity
 } from "react-native";
 
-export const ContactInformationForm = ({ minimalOrderValue,
+export const ContactInformationForm = ({
+  minimalOrderValue,
   deliveryPrice,
   editableMinimalOrderValue,
   editableDeliveryPrice,
   organizationId,
   token,
   checkIfDeviceIsRegistered,
-  setMinimalOrderValue,
   deliveryForCamp,
   deliveryForOrg,
   updateDeliveryMethod,
-  setDeliveryPrice }) => {
+}) => {
   const { uuid } = useSelector((state) => state.sessionReducer);
 
 
@@ -54,41 +54,40 @@ export const ContactInformationForm = ({ minimalOrderValue,
         }}
         style={{ backgroundColor: 'white', borderRadius: 5 }}
       />
-      
-      <Divider/>
 
-      <Section style={{marginTop:-20}} title="Entregas">
+      <Divider />
+
+      <Section style={{ marginTop: -20 }} title="Entregas">
         <ListRowItem
           title="PLATAFORMA CAMPINAPOLIS ENTREGAS"
           leftElement={<Icon name="logo-google" size={fontSize.l} />}
           rightElement={
             <Switch
               value={deliveryForCamp}
-              onValueChange={(value) => updateDeliveryMethod("camp_entregas",value)}
+              onValueChange={(value) => updateDeliveryMethod("camp_entregas", value)}
             />
           }
         />
-        <ListRowItem 
-          style={{paddingTop:-10}}
+        <ListRowItem
+          style={{ paddingTop: -10 }}
           title="USAR MEUS ENTREGADORES"
           leftElement={<Icon name="logo-google" size={fontSize.l} />}
           rightElement={
             <Switch
               value={deliveryForOrg}
-              onValueChange={(value) => updateDeliveryMethod("my_org",value)}
+              onValueChange={(value) => updateDeliveryMethod("my_org", value)}
             />
           }
         />
       </Section>
 
-      <Divider style={{ paddingBottom: 20 }}  />
-      
+      <Divider style={{ paddingBottom: 20 }} />
+
       <View style={styles.container}>
         <Text style={styles.label}>Valor Mínimo do Pedido</Text>
         <CurrencyInput
           value={minimalOrderValue}
           style={styles.inputBasic}
-          onChangeValue={setMinimalOrderValue}
           minValue={0}
           prefix="R$ "
           width={'50%'}
@@ -106,7 +105,6 @@ export const ContactInformationForm = ({ minimalOrderValue,
         <CurrencyInput
           value={deliveryPrice}
           style={styles.inputBasic}
-          onChangeValue={setDeliveryPrice}
           minValue={0}
           width={'50%'}
           prefix="R$ "
