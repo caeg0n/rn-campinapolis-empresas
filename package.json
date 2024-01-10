@@ -2,7 +2,8 @@
   "name": "campinapolis-empresas",
   "version": "1.0.0",
   "scripts": {
-    "start-production": "npx expo start -c --no-dev --minify",
+    "start:dev":"npx expo start --tunnel --port 19001",
+    "start:prod": "npx expo start -c --no-dev --minify --port 19001 --tunnel",
     "start": "npx expo start --dev-client",
     "start:android": "npx expo start --android",
     "start:ios": "npx expo start --ios",
@@ -15,7 +16,8 @@
     "storybook:watch": "sb-rn-watcher",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "android": "expo run:android",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "test": "jest"
   },
   "dependencies": {
     "@eva-design/eva": "^2.2.0",
@@ -90,6 +92,7 @@
     "@typescript-eslint/parser": "^5.43.0",
     "babel-loader": "^8.3.0",
     "eslint": "^8.28.0",
+    "jest": "^29.7.0",
     "prettier": "^3.0.3",
     "react-dom": "18.2.0"
   },
@@ -97,5 +100,7 @@
     "string-width": "4.2.3",
     "wrap-ansi": "7.0.0"
   },
-  "private": true
+  "private": true,
+  "author": "Carlos Eduardo",
+  "license": "UNLICENSED"
 }

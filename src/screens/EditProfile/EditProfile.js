@@ -32,8 +32,6 @@ export const EditProfile = () => {
   const dispatch = useDispatch();
   const editableMinimalOrderValue = React.useRef(false);
   const editableDeliveryPrice = React.useRef(false);
-  const minimalOrderValue = React.useRef("000");
-  const deliveryPrice = React.useRef("000");
 
   const [organizationId, setOrganizationId] = useState('- '.repeat(50));
   const [organizationName, setOrganizationName] = useState('- '.repeat(10));
@@ -43,6 +41,8 @@ export const EditProfile = () => {
   const [title, setTitle] = useState('- '.repeat(10));
   const [deliveryForCamp, setDeliveryForCamp] = useState(false);
   const [deliveryForOrg, setDeliveryForOrg] = useState(false);
+  const [minimalOrderValue, setMinimalOrderValue] = React.useState("000");
+  const [deliveryPrice, setDeliveryPrice] = React.useState("000");
   const { uuid } = useSelector((state) => state.sessionReducer);
 
   if (title != ('- '.repeat(10))) {
@@ -60,7 +60,8 @@ export const EditProfile = () => {
       const url = `${API_BASE_URL}/organization_devices?organization_device[device_id]=` + uuid;
       const response = await axios.get(url);
       if (response.status === 200 && response.data) {
-        console.log(response.data);
+        // setMinimalOrderValue(response.data.organization.minimal_buy_price);
+        // setDeliveryPrice(response.data.organization.delivery_fee);
         setOrganizationId(response.data.device);
         setCover(response.data.organization.cover);
         setTitle(response.data.organization.name);
@@ -159,6 +160,8 @@ export const EditProfile = () => {
         token={token}
         minimalOrderValue={minimalOrderValue}
         deliveryPrice={deliveryPrice}
+        setMinimalOrderValue={setMinimalOrderValue}
+        setDeliveryPrice={setDeliveryPrice}
         editableMinimalOrderValue={editableMinimalOrderValue.current}
         editableDeliveryPrice={editableDeliveryPrice.current}
         deliveryForCamp={deliveryForCamp}

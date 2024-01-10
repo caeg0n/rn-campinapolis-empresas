@@ -17,6 +17,8 @@ import {
 export const ContactInformationForm = ({
   minimalOrderValue,
   deliveryPrice,
+  setMinimalOrderValue,
+  setDeliveryPrice,
   editableMinimalOrderValue,
   editableDeliveryPrice,
   organizationId,
@@ -87,6 +89,7 @@ export const ContactInformationForm = ({
         <Text style={styles.label}>Valor Mínimo do Pedido</Text>
         <CurrencyInput
           value={minimalOrderValue}
+          onChangeValue={(value) => setMinimalOrderValue(value)}
           style={styles.inputBasic}
           minValue={0}
           prefix="R$ "
@@ -104,6 +107,7 @@ export const ContactInformationForm = ({
         <Text style={styles.label}>Valor do Frete</Text>
         <CurrencyInput
           value={deliveryPrice}
+          onChangeValue={(value) => setDeliveryPrice(value)}
           style={styles.inputBasic}
           minValue={0}
           width={'50%'}
