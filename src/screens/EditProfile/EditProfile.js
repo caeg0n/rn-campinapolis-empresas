@@ -14,8 +14,8 @@ import { myConnPut } from '@src/utils';
 
 const API_BASE_URL = __DEV__ ? DEV_API_BASE : PROD_API_BASE;
 const SET_EXPO_TOKEN_URL = __DEV__ ? DEV_API_BASE + '/notification/register' : PROD_API_BASE + '/notification/register';
-const UPDATE_ORGANIZATION_STATE_URL = __DEV__ ? DEV_API_BASE + '/organization_state' : PROD_API_BASE + '/organizations_state';
 const UPDATE_ORGANIZATION_DELIVERY_TYPE_URL = __DEV__ ? DEV_API_BASE + '/organization_delivery_type' : PROD_API_BASE + '/organizations_delivery_type';
+const UPDATE_FEES_URL = __DEV__ ? DEV_API_BASE + '/update_fees' : PROD_API_BASE + '/update_fees';
 
 async function updateDeliveryType(uuid, delivery_type, state) {
   const body = {
@@ -60,8 +60,8 @@ export const EditProfile = () => {
       const url = `${API_BASE_URL}/organization_devices?organization_device[device_id]=` + uuid;
       const response = await axios.get(url);
       if (response.status === 200 && response.data) {
-        // setMinimalOrderValue(response.data.organization.minimal_buy_price);
-        // setDeliveryPrice(response.data.organization.delivery_fee);
+        setMinimalOrderValue(response.data.organization.minimal_buy_price);
+        setDeliveryPrice(response.data.organization.delivery_fee);
         setOrganizationId(response.data.device);
         setCover(response.data.organization.cover);
         setTitle(response.data.organization.name);
@@ -76,7 +76,7 @@ export const EditProfile = () => {
     }
   };
 
-  async function registerForPushNotificationsAsync() {
+  const registerForPushNotificationsAsync = async () => {
     let token;
     if (Platform.OS === 'android') {
       Notifications.setNotificationChannelAsync('default', {
@@ -112,7 +112,7 @@ export const EditProfile = () => {
     return token ? token.data : null;
   }
 
-  async function registerExpoToken(token, uuid) {
+  const registerExpoToken = async (token, uuid) => {
     let transaction = { state: false };
     try {
       const response = await fetchWithTimeout(
@@ -135,7 +135,7 @@ export const EditProfile = () => {
     return transaction;
   }
 
-  async function updateDeliveryMethod(deliveryType, state) {
+  const updateDeliveryMethod = async (deliveryType, state) => {
     if (deliveryType === "my_org") {
       setDeliveryForOrg(state);
       setDeliveryForCamp(!state);
@@ -146,6 +146,17 @@ export const EditProfile = () => {
     }
     if (organizationId > 0 && uuid)
       await updateDeliveryType(uuid, deliveryType, state);
+  }
+
+  const updateFees = async () => {
+    const body = {
+      organization_device: {
+        uuid: uuid,
+        minimal_order_value: minimalOrderValue,
+        delivery_fee: deliveryPrice,
+      }
+    }
+    const transaction = await myConnPut(UPDATE_FEES_URL, body);
   }
 
   return (
@@ -168,6 +179,7 @@ export const EditProfile = () => {
         deliveryForOrg={deliveryForOrg}
         checkIfDeviceIsRegistered={checkIfDeviceIsRegistered}
         updateDeliveryMethod={updateDeliveryMethod}
+        updateFees={updateFees}
       />
     </ScrollView>
   );

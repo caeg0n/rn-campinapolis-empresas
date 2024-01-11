@@ -27,6 +27,7 @@ export const ContactInformationForm = ({
   deliveryForCamp,
   deliveryForOrg,
   updateDeliveryMethod,
+  updateFees
 }) => {
   const { uuid } = useSelector((state) => state.sessionReducer);
 
@@ -121,7 +122,7 @@ export const ContactInformationForm = ({
 
       <Divider />
 
-      <Button onPress={() => checkIfDeviceIsRegistered(uuid)} label="Atualizar" isFullWidth />
+      <Button onPress={async () => { checkIfDeviceIsRegistered(uuid);updateFees();}} label="Atualizar" isFullWidth />
     </Box>
   );
 };
