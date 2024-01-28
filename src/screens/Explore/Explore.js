@@ -2,6 +2,8 @@ import React from 'react';
 import { InteractionManager } from 'react-native';
 import { ScrollView } from 'react-native';
 import { useSafeAreaScrollViewStyles } from '@src/hooks';
+import { useScrollToTop } from '@react-navigation/native';
+import { useEffect } from 'react';
 // import { MemoizedSearchHeader } from './SearchHeader';
 // import { PopularCategories } from './PopularCategories/PopularCategories';
 // import { MemoizedPopularPlaces } from './PopularPlaces';
@@ -9,8 +11,6 @@ import { useSafeAreaScrollViewStyles } from '@src/hooks';
 // import { RecommendedPlaces } from './RecommendedPlaces';
 // import { HotDeals } from './HotDeals';
 // import { HighlightTabs } from './HighlightTabs';
-import { useScrollToTop } from '@react-navigation/native';
-import { useEffect } from 'react';
 // import { Divider } from '@src/components';
 
 export const Explore = ({ navigation }) => {

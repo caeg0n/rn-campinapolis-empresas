@@ -1,8 +1,8 @@
 import { SET_CATEGORIES_AND_PRODUCTS } from '@src/redux/actions/user';
 import { RESET_CATEGORIES_AND_PRODUCTS } from '@src/redux/actions/user';
 
-
 const initialState = {
+  organization:{},
   categories_and_products: [],
 };
 

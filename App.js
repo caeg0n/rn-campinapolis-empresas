@@ -10,7 +10,6 @@ import { MemoizedAuthProvider } from '@src/auth';
 import { StartupContainer } from './StartupContainer';
 import { CartProvider } from '@src/cart';
 import { useEffect, useState } from 'react';
-
 import { Provider } from 'react-redux';
 import { Store, persistor } from './src/redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -22,27 +21,29 @@ const styles = StyleSheet.create({
 });
 
 export default function App() {
-  const [allOpenedOrganizations, setAllOpenedOrganizations] = useState([]);
+  // const [allOpenedOrganizations, setAllOpenedOrganizations] = useState([]);
   const [isFetching, setFetching] = useState(true);
 
-  const fetchData = async () => {
-    let jsonData = {};
-    return jsonData;
-  };
+  // const fetchData = async () => {
+  //   let jsonData = {};
+  //   return jsonData;
+  // };
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
-    fetchData()
-      .then((jsonData) => {
-        setAllOpenedOrganizations(jsonData.jsonAllOpenedOrganizations);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      })
-      .finally(() => {
-        SplashScreen.hideAsync();
-        setFetching(false);
-      });
+    SplashScreen.hideAsync();
+    setFetching(false);
+    // fetchData()
+    //   .then((jsonData) => {
+    //     setAllOpenedOrganizations(jsonData.jsonAllOpenedOrganizations);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error fetching data:', error);
+    //   })
+    //   .finally(() => {
+    //     SplashScreen.hideAsync();
+    //     setFetching(false);
+    //   });
   }, []);
 
   if (isFetching) {
@@ -64,7 +65,7 @@ export default function App() {
               <AppThemeProvider>
                 <MemoizedAuthProvider
                   fetchData={{
-                    allOpenedOrganizations,
+                    // allOpenedOrganizations,
                   }}>
                   <CartProvider>
                     <MemoizedRootNavigation />
