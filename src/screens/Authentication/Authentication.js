@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { myConnGet, myConnPut } from '@src/utils';
 import { setOrganization } from '@src/redux/actions/session';
-
 //import { AuthContext } from '@src/auth';
 //import { StyleSheet } from 'react-native';
 //import { useDispatch } from 'react-redux';
@@ -15,22 +14,13 @@ import { setOrganization } from '@src/redux/actions/session';
 
 const API_BASE_URL = __DEV__ ? DEV_API_BASE : PROD_API_BASE;
 const UPDATE_STATE_URL = API_BASE_URL + '/organization_state';
-const GET_ORGANIZATION_URL = API_BASE_URL + '/organizations/';
+//const GET_ORGANIZATION_URL = API_BASE_URL + '/organizations/';
 
 export const Authentication = ({ navigation }) => {
   const dispatch = useDispatch();
   const { bottom } = useSafeAreaInsets();
   const { uuid, organization } = useSelector((state) => state.sessionReducer);
   const [isOpen, setIsOpen] = useState(organization.open);
-
-  const updateOrgOpenState = async () => {
-    const transaction = await myConnGet(GET_ORGANIZATION_URL + organization.id);
-    if (transaction.state == true) {
-      const organization = transaction.json;
-      dispatch(setOrganization(organization));
-      setIsOpen(organization.open);
-    };
-  };
 
   const onOpenClosePress = async () => {
     if (organization.id > 0) {
@@ -40,8 +30,10 @@ export const Authentication = ({ navigation }) => {
           is_open: !isOpen,
         }
       }
-      await myConnPut(UPDATE_STATE_URL, body);
-      await updateOrgOpenState();
+      const transaction = await myConnPut(UPDATE_STATE_URL, body);
+      console.log(transaction)
+      if (transaction.state == true && transaction.json.message == "error") { setIsOpen(isOpen); return; }
+      if (transaction.state == true && transaction.json.message == "ok") { setIsOpen(transaction.json.is_open); return; }
     };
   }
 
@@ -87,15 +79,15 @@ export const Authentication = ({ navigation }) => {
             <Button
               label="PEDIDOS"
               isFullWidth
-              //variant="facebook"
+              variant="success"
               marginTop="s"
               backgroundColor="facebook"
-              onPress={{}}
+              onPress={() => navigation.navigate("ActivityHistory")}
             />
             <Button
               label="PRODUTOS"
               isFullWidth
-              //variant="facebook"
+              //variant="twitter"
               marginTop="s"
               backgroundColor="facebook"
               onPress={() => navigation.navigate("ProductRegister")}

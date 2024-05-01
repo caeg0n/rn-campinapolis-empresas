@@ -1,12 +1,20 @@
 export const SET_USER_UUID = 'SET_USER_UUID';
 export const SET_EXPO_TOKEN = 'SET_EXPO_TOKEN';
 export const SET_ORGANIZATION = 'SET_ORGANIZATION';
+export const SET_ORDERS = 'SET_ORDERS';
 export const RESET_UUID = 'RESET_UUID';
 
 export const setUUID = (uuid) => (dispatch) => {
   dispatch({
     type: SET_USER_UUID,
     payload: uuid,
+  });
+};
+
+export const setOrders = (orders) => (dispatch) => {
+  dispatch({
+    type: SET_ORDERS,
+    payload: orders,
   });
 };
 
