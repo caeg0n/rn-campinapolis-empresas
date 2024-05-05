@@ -100,7 +100,7 @@ export const RootNavigation = () => {
           <RootStack.Screen
             options={{
               headerShown: true,
-              title: 'Pedidos'
+              title: 'Cadastro de Produto'
             }}
             name="ProductRegister"
             component={ProductRegister}

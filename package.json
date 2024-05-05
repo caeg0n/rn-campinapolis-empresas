@@ -2,7 +2,7 @@
   "name": "campinapolis-empresas",
   "version": "1.0.0",
   "scripts": {
-    "start:dev":"npx expo start --tunnel --port 19001",
+    "start:dev": "npx expo start --tunnel --port 19001",
     "start:prod": "npx expo start -c --no-dev --minify --port 19001 --tunnel",
     "start": "npx expo start --dev-client",
     "start:android": "npx expo start --android",

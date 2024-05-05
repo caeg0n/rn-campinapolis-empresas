@@ -79,18 +79,25 @@ export const Authentication = ({ navigation }) => {
             <Button
               label="PEDIDOS"
               isFullWidth
-              variant="success"
               marginTop="s"
               backgroundColor="facebook"
               onPress={() => navigation.navigate("ActivityHistory")}
             />
             <Button
-              label="PRODUTOS"
+              label="CADASTRAR PRODUTO"
               isFullWidth
               //variant="twitter"
               marginTop="s"
               backgroundColor="facebook"
-              onPress={() => navigation.navigate("ProductRegister")}
+              onPress={() => navigation.navigate("ProductRegister",{organization})}
+            />
+            <Button
+              label="LISTAR PRODUTOS"
+              isFullWidth
+              //variant="twitter"
+              marginTop="s"
+              backgroundColor="facebook"
+              onPress={() => navigation.navigate("ListProduct",{organization})}
             />
             {/* <Button
             label="FRETE"
