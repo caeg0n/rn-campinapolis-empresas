@@ -1,4 +1,5 @@
 import { DEV_API_BASE, PROD_API_BASE } from '@env';
+import { useEffect } from 'react';
 import React from 'react';
 import { Box, Button, Image } from '@src/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -6,21 +7,25 @@ import { StatusBar } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { myConnGet, myConnPut } from '@src/utils';
-import { setOrganization } from '@src/redux/actions/session';
+//import { organization, setOrganization } from '@src/redux/actions/session';
 //import { AuthContext } from '@src/auth';
 //import { StyleSheet } from 'react-native';
 //import { useDispatch } from 'react-redux';
-//import { useEffect } from 'react';
 
 const API_BASE_URL = __DEV__ ? DEV_API_BASE : PROD_API_BASE;
 const UPDATE_STATE_URL = API_BASE_URL + '/organization_state';
 //const GET_ORGANIZATION_URL = API_BASE_URL + '/organizations/';
 
 export const Authentication = ({ navigation }) => {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const { bottom } = useSafeAreaInsets();
   const { uuid, organization } = useSelector((state) => state.sessionReducer);
   const [isOpen, setIsOpen] = useState(organization.open);
+  console.log("Authentication");
+
+  useEffect(() => {
+    setIsOpen(organization.open); 
+  }, [organization]);
 
   const onOpenClosePress = async () => {
     if (organization.id > 0) {
@@ -31,7 +36,6 @@ export const Authentication = ({ navigation }) => {
         }
       }
       const transaction = await myConnPut(UPDATE_STATE_URL, body);
-      console.log(transaction)
       if (transaction.state == true && transaction.json.message == "error") { setIsOpen(isOpen); return; }
       if (transaction.state == true && transaction.json.message == "ok") { setIsOpen(transaction.json.is_open); return; }
     };
@@ -92,12 +96,12 @@ export const Authentication = ({ navigation }) => {
               onPress={() => navigation.navigate("ProductRegister",{organization})}
             />
             <Button
-              label="LISTAR PRODUTOS"
+              label="MEUS PRODUTOS"
               isFullWidth
               //variant="twitter"
               marginTop="s"
               backgroundColor="facebook"
-              onPress={() => navigation.navigate("ListProduct",{organization})}
+              onPress={() => navigation.navigate("ListProducts",{organization})}
             />
             {/* <Button
             label="FRETE"

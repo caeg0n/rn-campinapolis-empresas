@@ -1,4 +1,5 @@
 export * from './ProductRegister';
+export * from './ListProducts';
 export * from './EditProfile';
 export * from './Authentication';
 //export * from './Explore';

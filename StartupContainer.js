@@ -8,17 +8,30 @@ import { myConnPost, myConnGet } from '@src/utils';
 const API_BASE_URL = __DEV__ ? DEV_API_BASE : PROD_API_BASE;
 const SET_ORGANIZATION_URL = API_BASE_URL + '/validate_device';
 const GET_ORGANIZATION_URL = API_BASE_URL + '/organizations/';
-const GET_ORDERS_URL = API_BASE_URL + '/get_orders_by_organization/';
+//const GET_ORDERS_URL = API_BASE_URL + '/get_orders_by_organization/';
 
 export const StartupContainer = () => {
   const dispatch = useDispatch();
-  const { uuid, organization } = useSelector((state) => state.sessionReducer);
+  const { uuid } = useSelector((state) => state.sessionReducer);
+  console.log("StartupContainer");
+
+  useEffect(() => {
+    async function handleEffect() {
+      if (!uuid) {  
+        const temp_uuid = v4();  
+        dispatch(temp_uuid);  
+      }
+      await validateDevice(uuid);  
+      //getOrders(uuid, organization);  
+    }
+    handleEffect();  
+  }, [uuid, dispatch]); 
 
   const getOrganization = async (id) => {
     const transaction = await myConnGet(GET_ORGANIZATION_URL+id);
     if (transaction.state == true) {
-      const organization = transaction.json;
-      dispatch(setOrganization(organization));
+      const temp_organization = transaction.json;
+      dispatch(setOrganization(temp_organization));
     };
   }
 
@@ -37,21 +50,12 @@ export const StartupContainer = () => {
     };
   }
 
-  const getOrders = async (uuid, organization) => {
-    const transaction = await myConnGet(GET_ORDERS_URL+uuid+'/'+organization.id);
-    if (transaction.state == true) {
-      const orders = transaction.json;
-      dispatch(setOrders(orders));
-      console.log(orders);
-    };
-  }
+  // const getOrders = async (uuid, organization) => {
+  //   const transaction = await myConnGet(GET_ORDERS_URL+uuid+'/'+organization.id);
+  //   if (transaction.state == true) {
+  //     const orders = transaction.json;
+  //     dispatch(setOrders(orders));
+  //   };
+  // }
 
-  useEffect(() => {
-    let temp_uuid = setUUID(v4());
-    if (uuid === undefined || uuid === '') {
-      dispatch(temp_uuid);
-    }
-    validateDevice(uuid);
-    getOrders(uuid, organization);
-  }, [dispatch, uuid]);
 };

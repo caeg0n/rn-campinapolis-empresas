@@ -33,7 +33,7 @@ export const ContactInformationForm = ({
 
 
   return (
-    <Box backgroundColor="lightGrey" padding="m">
+    <Box backgroundColor="lightGrey" padding="s">
       <TextField disabled
         inputProps={{
           defaultValue: uuid.toString(),
