@@ -21,30 +21,17 @@ const styles = StyleSheet.create({
 });
 
 export default function App() {
-  // const [allOpenedOrganizations, setAllOpenedOrganizations] = useState([]);
+  //const [allOpenedOrganizations, setAllOpenedOrganizations] = useState([]);
   const [isFetching, setFetching] = useState(true);
-
-  // const fetchData = async () => {
-  //   let jsonData = {};
-  //   return jsonData;
-  // };
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
-    SplashScreen.hideAsync();
-    setFetching(false);
-    // fetchData()
-    //   .then((jsonData) => {
-    //     setAllOpenedOrganizations(jsonData.jsonAllOpenedOrganizations);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error fetching data:', error);
-    //   })
-    //   .finally(() => {
-    //     SplashScreen.hideAsync();
-    //     setFetching(false);
-    //   });
-  }, []);
+    const initializeApp = async () => {
+      SplashScreen.hideAsync();
+      setFetching(false);
+    };
+    initializeApp();
+  });
 
   if (isFetching) {
     return (
@@ -63,10 +50,7 @@ export default function App() {
           <PortalProvider>
             <SafeAreaProvider>
               <AppThemeProvider>
-                <MemoizedAuthProvider
-                  fetchData={{
-                    // allOpenedOrganizations,
-                  }}>
+                <MemoizedAuthProvider>
                   <CartProvider>
                     <MemoizedRootNavigation />
                   </CartProvider>

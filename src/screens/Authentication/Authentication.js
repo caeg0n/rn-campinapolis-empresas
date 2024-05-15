@@ -101,7 +101,8 @@ export const Authentication = ({ navigation }) => {
               //variant="twitter"
               marginTop="s"
               backgroundColor="facebook"
-              onPress={() => navigation.navigate("ListProducts",{organization})}
+              //onPress={() => navigation.navigate("ListProducts",{organization})}
+              onPress={() => navigation.navigate("PlaceDetails",{organization})}
             />
             {/* <Button
             label="FRETE"

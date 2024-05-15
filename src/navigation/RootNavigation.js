@@ -11,7 +11,8 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PortalHost } from '@gorhom/portal';
 import { ProductRegister } from '@src/screens';
-import { ListProducts } from '@src/screens';
+//import { ListProducts } from '@src/screens';
+import { PlaceDetails } from '@src/screens';
 import { EditProfile } from '@src/screens';
 import { Authentication } from '@src/screens';
 import { ActivityHistory } from '@src/screens/ActivityHistory';
@@ -106,13 +107,21 @@ export const RootNavigation = () => {
             name="ProductRegister"
             component={ProductRegister}
           />
-          <RootStack.Screen
+          {/* <RootStack.Screen
             options={{
               headerShown: true,
               title: 'Meus Produtos'
             }}
             name="ListProducts"
             component={ListProducts}
+          /> */}
+          <RootStack.Screen
+            options={{
+              headerShown: true,
+              title: 'Meus Produtos'
+            }}
+            name="PlaceDetails"
+            component={PlaceDetails}
           />
           <RootStack.Screen
             options={{

@@ -1,5 +1,5 @@
 export * from './ProductRegister';
-export * from './ListProducts';
+export * from './PlaceDetails';
 export * from './EditProfile';
 export * from './Authentication';
 //export * from './Explore';

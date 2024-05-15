@@ -13,8 +13,7 @@ const GET_ORGANIZATION_URL = API_BASE_URL + '/organizations/';
 export const StartupContainer = () => {
   const dispatch = useDispatch();
   const { uuid } = useSelector((state) => state.sessionReducer);
-  console.log("StartupContainer");
-
+  
   useEffect(() => {
     async function handleEffect() {
       if (!uuid) {  
