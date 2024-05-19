@@ -7,7 +7,7 @@ import { myConnGet } from '@src/utils';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-//import { mockPlaceDetails } from '@src/data';
+// import { mockPlaceDetails } from '@src/data';
 // import { BasketSummary } from "./BasketSummary"
 // import { PopularDishes } from "./PopularDishes"
 // import { HeadingInformation } from "./HeadingInformation"
