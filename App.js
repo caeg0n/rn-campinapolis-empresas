@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
   },
 });
 
+
 export default function App() {
   //const [allOpenedOrganizations, setAllOpenedOrganizations] = useState([]);
   const [isFetching, setFetching] = useState(true);

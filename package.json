@@ -2,9 +2,9 @@
   "name": "campinapolis-empresas",
   "version": "1.0.0",
   "scripts": {
-    "start:dev": "npx expo start --tunnel --port 19001",
-    "start:prod": "npx expo start -c --no-dev --minify --port 19001 --tunnel",
-    "start": "npx expo start --dev-client",
+    "start:dev": "clear && npx expo start --port 19001",
+    "start:prod": "clear && npx expo start -c --no-dev --minify --port 19001 --tunnel",
+    "start": "clear && npx expo start --dev-client",
     "start:android": "npx expo start --android",
     "start:ios": "npx expo start --ios",
     "start:storybook-server": "(adb reverse tcp:7007 tcp:7007 || true) && react-native-storybook-server",

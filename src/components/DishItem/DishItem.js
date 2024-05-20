@@ -16,9 +16,12 @@ export const DishItem = ({ data }) => {
   const [isJunkDialogVisible, setJunkDialogVisible] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const hideMenu = () => setVisible(false);
-  const showMenu = () => setVisible(true);
+  const hideMenu = () => {
+    console.log(data);
+    setVisible(false);
+  }
 
+  const showMenu = () => setVisible(true);
 
   const onPlaceItemPress = () => {
     navigation.navigate('DishDetailsModal');
