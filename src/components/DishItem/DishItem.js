@@ -1,3 +1,5 @@
+import { DEV_API_BASE, PROD_API_BASE } from '@env';
+
 import React, { useState } from 'react';
 import { Box, Text, Touchable, Image } from '../elements';
 import { formatCurrency } from '@src/utils';
@@ -7,9 +9,13 @@ import { Provider } from 'react-native-paper';
 import Dialog from 'react-native-dialog';
 import { View } from 'react-native';
 import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
+import { myConnDelete } from '@src/utils';
+
+const API_BASE = __DEV__ ? DEV_API_BASE : PROD_API_BASE;
+var DELETE_PRODUCT_URL = API_BASE + '/products';
 
 export const DishItem = ({ data }) => {
-  const { price, title, description, image } = data;
+  const { id, price, title, description, image } = data;
   const navigation = useExploreStackNavigation();
   const [isPlayDialogVisible, setPlayDialogVisible] = useState(false);
   const [isPauseDialogVisible, setPauseDialogVisible] = useState(false);
@@ -17,7 +23,6 @@ export const DishItem = ({ data }) => {
   const [visible, setVisible] = useState(false);
 
   const hideMenu = () => {
-    console.log(data);
     setVisible(false);
   }
 
@@ -61,13 +66,21 @@ export const DishItem = ({ data }) => {
     console.log('Produto pausado');
   };
 
-  const handleJunkDialogConfirm = () => {
+  const handleJunkDialogConfirm = async () => {
+    const body = {
+      product: {
+        id: id
+      },
+    };
+    const transaction = await myConnDelete(DELETE_PRODUCT_URL, body);
+    if (transaction.state == true && message == "ok") {
+      
+    };
     setJunkDialogVisible(false);
-    console.log('Produto excluído');
   };
 
   const handleEditPress = () => {
-    console.log('Edit clicked');
+    // console.log('Edit clicked');
     // closeMenu();
   };
 

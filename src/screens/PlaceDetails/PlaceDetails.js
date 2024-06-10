@@ -61,15 +61,19 @@ export const PlaceDetails = () => {
 
   useEffect(() => {
     const initializeApp = async () => {
-      const transaction = await myConnGet(
-        GET_ALL_CATEGORIES_AND_PRODUCTS_URL + '/' + organization.id,
-      );
-      if (transaction.state == true) {
-        set_categories_and_products(transaction.json);
-      }
+      updateProducts();
     };
     initializeApp();
   }, []);
+
+  const updateProducts = async () => {
+    const transaction = await myConnGet(
+      GET_ALL_CATEGORIES_AND_PRODUCTS_URL + '/' + organization.id,
+    );
+    if (transaction.state == true) {
+      set_categories_and_products(transaction.json);
+    }
+  }
 
   const renderItemSeparator = () => (
     <Divider height={0.5} marginVertical="none" />

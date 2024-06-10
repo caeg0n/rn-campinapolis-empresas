@@ -63,3 +63,26 @@ export async function myConnPost(url, obj) {
   }
   return transaction;
 }
+
+export async function myConnDelete(url,obj) {
+  let transaction = { state: false };
+  try {
+    const response = await fetchWithTimeout(
+      url,
+      {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(obj),
+      },
+      { timeout: 6000 }
+    );
+    const json = await response.json();
+    transaction.json = json;
+    if (response.ok && response.status >= 200 && response.status <= 299) {
+      transaction.state = true;
+    }
+  } catch (err) {
+    transaction.err = err;
+  }
+  return transaction;
+}

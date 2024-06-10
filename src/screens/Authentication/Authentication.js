@@ -4,9 +4,9 @@ import React from 'react';
 import { Box, Button, Image } from '@src/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import { myConnGet, myConnPut } from '@src/utils';
+import { myConnPut } from '@src/utils';
 //import { organization, setOrganization } from '@src/redux/actions/session';
 //import { AuthContext } from '@src/auth';
 //import { StyleSheet } from 'react-native';
@@ -14,14 +14,11 @@ import { myConnGet, myConnPut } from '@src/utils';
 
 const API_BASE_URL = __DEV__ ? DEV_API_BASE : PROD_API_BASE;
 const UPDATE_STATE_URL = API_BASE_URL + '/organization_state';
-//const GET_ORGANIZATION_URL = API_BASE_URL + '/organizations/';
 
 export const Authentication = ({ navigation }) => {
-  //const dispatch = useDispatch();
   const { bottom } = useSafeAreaInsets();
   const { uuid, organization } = useSelector((state) => state.sessionReducer);
   const [isOpen, setIsOpen] = useState(organization.open);
-  console.log("Authentication");
 
   useEffect(() => {
     setIsOpen(organization.open); 
@@ -36,8 +33,8 @@ export const Authentication = ({ navigation }) => {
         }
       }
       const transaction = await myConnPut(UPDATE_STATE_URL, body);
-      if (transaction.state == true && transaction.json.message == "error") { setIsOpen(isOpen); return; }
-      if (transaction.state == true && transaction.json.message == "ok") { setIsOpen(transaction.json.is_open); return; }
+      if (transaction.state == true && transaction.json.state == 'not_authorized') { setIsOpen(isOpen); return; }
+      if (transaction.state == true && transaction.json.state == 'success') { setIsOpen(transaction.json.data.is_open); return; }
     };
   }
 
