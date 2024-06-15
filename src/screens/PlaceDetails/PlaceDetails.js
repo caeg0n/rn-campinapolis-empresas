@@ -144,7 +144,7 @@ export const PlaceDetails = () => {
             </Text>
           )}
           renderItem={({ item }) => {
-            return <DishItem data={item} />;
+            return <DishItem data={item} updateProducts={updateProducts} />;
           }}
           onScroll={Animated.event(
             [

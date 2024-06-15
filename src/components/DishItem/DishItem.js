@@ -9,17 +9,19 @@ import { Provider } from 'react-native-paper';
 import Dialog from 'react-native-dialog';
 import { View } from 'react-native';
 import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
-import { myConnDelete } from '@src/utils';
+import { myConnDelete, myConnPut } from '@src/utils';
 
 const API_BASE = __DEV__ ? DEV_API_BASE : PROD_API_BASE;
 var DELETE_PRODUCT_URL = API_BASE + '/products';
+var PAUSE_PRODUCT_URL = API_BASE + '/pause_product';
 
-export const DishItem = ({ data }) => {
+export const DishItem = ({ data, updateProducts }) => {
   const { id, price, title, description, image } = data;
   const navigation = useExploreStackNavigation();
   const [isPlayDialogVisible, setPlayDialogVisible] = useState(false);
   const [isPauseDialogVisible, setPauseDialogVisible] = useState(false);
   const [isJunkDialogVisible, setJunkDialogVisible] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const hideMenu = () => {
@@ -56,14 +58,34 @@ export const DishItem = ({ data }) => {
     setJunkDialogVisible(false);
   };
 
-  const handlePlayDialogConfirm = () => {
+  const handlePlayDialogConfirm = async () => {
+    const body = {
+      product: {
+        id: id,
+        status: "active"
+      },
+    };
+    const transaction = await myConnPut(PAUSE_PRODUCT_URL, body);
+    if (transaction.state == true && transaction.json.state == "active") {
+      setIsPaused(false)
+      updateProducts();
+    };
     setPlayDialogVisible(false);
-    console.log('Produto colocado à venda');
   };
 
-  const handlePauseDialogConfirm = () => {
+  const handlePauseDialogConfirm = async () => {
+    const body = {
+      product: {
+        id: id,
+        status: "paused"
+      },
+    };
+    const transaction = await myConnPut(PAUSE_PRODUCT_URL, body);
+    if (transaction.state == true && transaction.json.state == "paused") {
+      setIsPaused(true)
+      updateProducts();
+    };
     setPauseDialogVisible(false);
-    console.log('Produto pausado');
   };
 
   const handleJunkDialogConfirm = async () => {
@@ -73,22 +95,22 @@ export const DishItem = ({ data }) => {
       },
     };
     const transaction = await myConnDelete(DELETE_PRODUCT_URL, body);
-    if (transaction.state == true && message == "ok") {
-      
+    if (transaction.state == true && transaction.json.state == "destroyed") {
+      updateProducts();
     };
     setJunkDialogVisible(false);
   };
 
-  const handleEditPress = () => {
+  // const handleEditPress = () => {
     // console.log('Edit clicked');
     // closeMenu();
-  };
+  // };
 
   return (
     <Provider>
       <Touchable onPress={onPlaceItemPress} activeOpacity={0.5}>
         <View>
-          <Box flexDirection="row" padding="m" backgroundColor="card">
+          <Box flexDirection="row" padding="m" backgroundColor={isPaused ? 'google' : 'card'}>
             {image && (
               <Image
                 width={70}
@@ -193,7 +215,7 @@ export const DishItem = ({ data }) => {
                       size: 15,
                       color: 'white',
                     }}
-                    buttonStyle={{ backgroundColor: 'yellow' }}
+                    buttonStyle={{ backgroundColor: 'blue' }}
                     onPress={handlePausePress}
                   />
                 </Box>
