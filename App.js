@@ -1,3 +1,5 @@
+import { DEV_API_BASE, PROD_API_BASE } from '@env';
+
 import * as SplashScreen from 'expo-splash-screen';
 import { View, ActivityIndicator } from 'react-native';
 import { Text, StyleSheet } from 'react-native';
@@ -9,10 +11,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MemoizedAuthProvider } from '@src/auth';
 import { StartupContainer } from './StartupContainer';
 import { CartProvider } from '@src/cart';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Provider } from 'react-redux';
 import { Store, persistor } from './src/redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+
+const API_BASE = __DEV__ ? DEV_API_BASE : PROD_API_BASE;
+var GET_ALL_CATEGORIES_AND_PRODUCTS_URL =
+  API_BASE + '/get_categories_and_products';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,16 +26,32 @@ const styles = StyleSheet.create({
   },
 });
 
+const fetchData = async () => {
+  let jsonData = {};
+  response = await fetch(GET_ALL_CATEGORIES_AND_PRODUCTS_URL);
+  json = await response.json();
+  jsonData.jsonAllCategoriesAndProducts = json;
+  return jsonData;
+};
 
 export default function App() {
+  const allCategoriesAndProducts = useRef([]);
   //const [allOpenedOrganizations, setAllOpenedOrganizations] = useState([]);
   const [isFetching, setFetching] = useState(true);
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
     const initializeApp = async () => {
-      SplashScreen.hideAsync();
-      setFetching(false);
+      try {
+        const jsonData = await fetchData();
+        allCategoriesAndProducts.current =
+          jsonData.jsonAllCategoriesAndProducts;
+      } catch (error) {
+        console.error('Error fetching data in app.js:', error);
+      } finally {
+        SplashScreen.hideAsync();
+        setFetching(false);
+      }
     };
     initializeApp();
   });
@@ -51,7 +73,10 @@ export default function App() {
           <PortalProvider>
             <SafeAreaProvider>
               <AppThemeProvider>
-                <MemoizedAuthProvider>
+                <MemoizedAuthProvider
+                  fetchData={{
+                    allCategoriesAndProducts: allCategoriesAndProducts.current,
+                  }}>
                   <CartProvider>
                     <MemoizedRootNavigation />
                   </CartProvider>

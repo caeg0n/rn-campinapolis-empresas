@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { AuthContext } from './auth';
 import { useDispatch } from 'react-redux';
+import { setCategoriesAndProducts } from '@src/redux/actions/user';
+import { resetCategoriesAndProducts } from '@src/redux/actions/user';
 // import { resetCategories } from '@src/redux/actions/user';
 // import { resetMostPopular } from '@src/redux/actions/user';
 // import { resetOrganizations } from '@src/redux/actions/user';
@@ -8,7 +10,6 @@ import { useDispatch } from 'react-redux';
 // import { resetHotDeals } from '@src/redux/actions/user';
 // import { resetAllOpenedOrganizations } from '@src/redux/actions/user';
 // import { resetAllClosedOrganizations } from '@src/redux/actions/user';
-// import { resetCategoriesAndProducts } from '@src/redux/actions/user';
 // import { setAllPaymentsMethods } from '@src/redux/actions/user';
 // import { setAllOrganizations } from '@src/redux/actions/user';
 // import { setMostPopular } from '@src/redux/actions/user';
@@ -17,7 +18,6 @@ import { useDispatch } from 'react-redux';
 // import { setHotDeals } from '@src/redux/actions/user';
 // import { setAllOpenedOrganizations } from '@src/redux/actions/user';
 // import { setAllClosedOrganizations } from '@src/redux/actions/user';
-// import { setCategoriesAndProducts } from '@src/redux/actions/user';
 import {
   // setOrderStatusList,
   // setOrderStatusBaseList,
@@ -79,6 +79,8 @@ export const AuthProvider = ({ children, fetchData }) => {
 
   useEffect(() => {
     //reidrata asyncstorage
+    localDispatch(resetCategoriesAndProducts());
+    localDispatch(setCategoriesAndProducts(fetchData.allCategoriesAndProducts));
     //localDispatch(resetUUID());
     //localDispatch(resetSelectedAddress());
     //localDispatch(resetSelectedPaymentMethod());
@@ -89,8 +91,6 @@ export const AuthProvider = ({ children, fetchData }) => {
     // localDispatch(resetHotDeals());
     // localDispatch(resetAllOpenedOrganizations());
     // localDispatch(resetAllClosedOrganizations());
-    // localDispatch(resetCategoriesAndProducts());
-
     // localDispatch(setAllPaymentsMethods(fetchData.allPaymentsMethods));
     // localDispatch(setAllOrganizations(fetchData.allOrganizations));
     // localDispatch(setMostPopular(fetchData.mostPopular));
@@ -99,12 +99,10 @@ export const AuthProvider = ({ children, fetchData }) => {
     // localDispatch(setHotDeals(fetchData.hotDeals));
     // localDispatch(setAllOpenedOrganizations(fetchData.allOpenedOrganizations));
     // localDispatch(setAllClosedOrganizations(fetchData.allClosedOrganizations));
-    // localDispatch(setCategoriesAndProducts(fetchData.allCategoriesAndProducts));
     // localDispatch(setOrderStatusList(fetchData.allOrderStatusList));
     // localDispatch(setOrderStatusBaseList(fetchData.allOrderStatusBaseList));
     // localDispatch(setOrderStatusBlockList(fetchData.allOrderStatusBlockList));
   });
-
   return (
     <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>
   );

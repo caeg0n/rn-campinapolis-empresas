@@ -31,7 +31,7 @@ export const DishItem = ({ data, updateProducts }) => {
   const showMenu = () => setVisible(true);
 
   const onPlaceItemPress = () => {
-    navigation.navigate('DishDetailsModal');
+    //navigation.navigate('DishDetailsModal');
   };
 
   const handleJunkPress = () => {

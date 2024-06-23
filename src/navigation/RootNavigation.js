@@ -15,6 +15,7 @@ import { ProductRegister } from '@src/screens';
 import { PlaceDetails } from '@src/screens';
 import { EditProfile } from '@src/screens';
 import { Authentication } from '@src/screens';
+import { TrackOrder } from '@src/screens';
 import { ActivityHistory } from '@src/screens/ActivityHistory';
 //import TabNavigation from './TabNavigation';
 // import { AuthContext } from '@src/auth';
@@ -94,7 +95,7 @@ export const RootNavigation = () => {
           <RootStack.Screen
             options={{
               headerShown: true,
-              title: 'Pedidos'
+              title: 'Pedidos',
             }}
             name="ActivityHistory"
             component={ActivityHistory}
@@ -102,7 +103,7 @@ export const RootNavigation = () => {
           <RootStack.Screen
             options={{
               headerShown: true,
-              title: 'Cadastro de Produto'
+              title: 'Cadastro de Produto',
             }}
             name="ProductRegister"
             component={ProductRegister}
@@ -118,7 +119,7 @@ export const RootNavigation = () => {
           <RootStack.Screen
             options={{
               headerShown: true,
-              title: 'Meus Produtos'
+              title: 'Meus Produtos',
             }}
             name="PlaceDetails"
             component={PlaceDetails}
@@ -126,10 +127,18 @@ export const RootNavigation = () => {
           <RootStack.Screen
             options={{
               headerShown: true,
-              title: 'Configurações'
+              title: 'Configurações',
             }}
             name="EditProfile"
             component={EditProfile}
+          />
+          <RootStack.Screen
+            options={{
+              headerTitle: 'Pedidos',
+              headerShown: true,
+            }}
+            name="TrackOrder"
+            component={TrackOrder}
           />
         </RootStack.Navigator>
       </NavigationContainer>

@@ -4,8 +4,8 @@ import { useActivityHistoryStackNavigation } from '@src/hooks';
 import { formatCurrency } from '@src/utils';
 import { useSelector } from 'react-redux';
 import { View } from 'react-native';
-import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
-import { database } from '../../../firebaseConfig';
+//import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+//import { database } from '../../../firebaseConfig';
 
 function hashStringToFourChars(input) {
   let hash = 0;
@@ -40,16 +40,16 @@ export const ActivityHistory = () => {
   const { orders } = useSelector((state) => state.sessionReducer);
   const category = extractOrganizationCategory(orders);
 
-  const addDocumentIfOrderIdDoesNotExist = async (orderId, newData) => {
-    const collectionRef = collection(database, 'orders');
-    const q = query(collectionRef, where('orderId', '==', orderId));
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) {
-      try {
-        const docRef = await addDoc(collectionRef, newData);
-      } catch (e) {}
-    }
-  };
+  // const addDocumentIfOrderIdDoesNotExist = async (orderId, newData) => {
+  //   const collectionRef = collection(database, 'orders');
+  //   const q = query(collectionRef, where('orderId', '==', orderId));
+  //   const querySnapshot = await getDocs(q);
+  //   if (querySnapshot.empty) {
+  //     try {
+  //       const docRef = await addDoc(collectionRef, newData);
+  //     } catch (e) {}
+  //   }
+  // };
 
   const data = Object.entries(orders).flatMap(([reference, orgOrders]) => {
     return Object.entries(orgOrders).flatMap(([organizationId, ordersList]) => {
@@ -66,12 +66,12 @@ export const ActivityHistory = () => {
         total += parseFloat(order.total);
         return total;
       }, 0);
-      const newData = {
-        orderId: orderId,
-        statusNow: [0],
-      };
+      // const newData = {
+      //   orderId: orderId,
+      //   statusNow: [0],
+      // };
 
-      addDocumentIfOrderIdDoesNotExist(orderId, newData);
+      //addDocumentIfOrderIdDoesNotExist(orderId, newData);
 
       return [
         {
